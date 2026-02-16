@@ -167,13 +167,19 @@ export default function ApplicationForm() {
       });
     }
 
-    // Replace with real API endpoint — attribution payload ready to send
-    console.log("[GEO Monitor] Submission payload:", {
-      form,
-      attribution,
-      qualified,
-    });
-    await new Promise((r) => setTimeout(r, 1500));
+    try {
+      const res = await fetch("/api/beta/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form, attribution, qualified }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        console.error("[GEO Monitor] Submit error:", data);
+      }
+    } catch (err) {
+      console.error("[GEO Monitor] Network error:", err);
+    }
     setStatus(qualified ? "qualified" : "waitlist");
   }
 
