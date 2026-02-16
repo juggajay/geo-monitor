@@ -4,7 +4,9 @@ type AnalyticsEvent =
   | "form_start"
   | "form_submit"
   | "qualified_submit"
-  | "disqualified_submit";
+  | "disqualified_submit"
+  | "variant_assignment"
+  | "page_view";
 
 declare global {
   interface Window {

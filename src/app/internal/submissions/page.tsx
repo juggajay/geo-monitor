@@ -17,6 +17,7 @@ interface Application {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  hero_variant: string | null;
   submitted_at: string;
 }
 
@@ -241,7 +242,7 @@ export default function SubmissionsDashboard() {
               if (!app) return null;
               return (
                 <div className="border-t border-[#1a1a2e] bg-[#0c0c12] px-6 py-5">
-                  <div className="grid gap-4 md:grid-cols-3">
+                  <div className="grid gap-4 md:grid-cols-4">
                     <div>
                       <div className="text-xs font-medium text-[#55556a]">Role</div>
                       <div className="mt-1 text-sm">{app.role || "—"}</div>
@@ -253,6 +254,10 @@ export default function SubmissionsDashboard() {
                     <div>
                       <div className="text-xs font-medium text-[#55556a]">Campaign</div>
                       <div className="mt-1 text-sm">{app.utm_campaign || "—"}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs font-medium text-[#55556a]">Hero Variant</div>
+                      <div className="mt-1 text-sm">{app.hero_variant || "—"}</div>
                     </div>
                   </div>
                   <div className="mt-4">

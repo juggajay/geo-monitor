@@ -17,6 +17,7 @@ interface ApplyBody {
     last_touch: TouchData;
   };
   qualified: boolean;
+  heroVariant?: string;
 }
 
 interface TouchData {
@@ -92,6 +93,7 @@ export async function POST(request: NextRequest) {
         qualified_status, pipeline_stage,
         utm_source, utm_medium, utm_campaign, utm_content, utm_term,
         first_touch_json, last_touch_json,
+        hero_variant,
         submitted_at
       ) VALUES (
         ${body.form.name.trim()},
@@ -111,6 +113,7 @@ export async function POST(request: NextRequest) {
         ${lastUtm?.utm_term || null},
         ${JSON.stringify(body.attribution?.first_touch || null)},
         ${JSON.stringify(body.attribution?.last_touch || null)},
+        ${body.heroVariant || "a"},
         NOW()
       )
       RETURNING id

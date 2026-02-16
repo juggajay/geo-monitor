@@ -1,11 +1,18 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { track } from "../lib/analytics";
 
 export default function HeroCTA() {
   const searchParams = useSearchParams();
   const variant = searchParams.get("variant") || "a";
+
+  // Fire variant_assignment once on mount
+  useEffect(() => {
+    track("variant_assignment", { variant });
+    track("page_view", { variant, path: window.location.pathname });
+  }, [variant]);
 
   return (
     <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center">

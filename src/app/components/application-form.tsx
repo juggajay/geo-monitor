@@ -127,6 +127,11 @@ export default function ApplicationForm() {
     persistFirstTouch(attr);
   }, []);
 
+  // Read hero variant from URL
+  const heroVariant = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("variant") || "a"
+    : "a";
+
   function onChange(field: keyof FormData, value: string) {
     if (!hasTrackedStart.current) {
       track("form_start");
@@ -149,6 +154,7 @@ export default function ApplicationForm() {
 
     track("form_submit", {
       clientCount: form.clientCount,
+      variant: heroVariant,
       ...lastTouch.utm,
     });
 
@@ -157,12 +163,14 @@ export default function ApplicationForm() {
       track("qualified_submit", {
         clientCount: form.clientCount,
         agency: form.agencyName,
+        variant: heroVariant,
         ...lastTouch.utm,
       });
     } else {
       track("disqualified_submit", {
         clientCount: form.clientCount,
         agency: form.agencyName,
+        variant: heroVariant,
         ...lastTouch.utm,
       });
     }
@@ -171,7 +179,7 @@ export default function ApplicationForm() {
       const res = await fetch("/api/beta/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form, attribution, qualified }),
+        body: JSON.stringify({ form, attribution, qualified, heroVariant }),
       });
       const data = await res.json();
       if (!data.ok) {

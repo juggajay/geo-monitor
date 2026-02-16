@@ -10,6 +10,13 @@ export const sql = neon(DATABASE_URL);
 
 /** Run once on first deploy to create the table. */
 export async function ensureTable() {
+  // Add hero_variant column if missing (safe to run repeatedly)
+  await sql`
+    ALTER TABLE applications ADD COLUMN IF NOT EXISTS hero_variant TEXT
+  `.catch(() => {
+    // Table doesn't exist yet — will be created below
+  });
+
   await sql`
     CREATE TABLE IF NOT EXISTS applications (
       id SERIAL PRIMARY KEY,
@@ -30,6 +37,7 @@ export async function ensureTable() {
       utm_term TEXT,
       first_touch_json JSONB,
       last_touch_json JSONB,
+      hero_variant TEXT,
       submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
