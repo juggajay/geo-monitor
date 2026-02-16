@@ -1,7 +1,75 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { track } from "../lib/analytics";
+
+/* ── UTM Attribution ── */
+
+interface UtmParams {
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+}
+
+interface Attribution {
+  utm: UtmParams;
+  landing_page_url: string;
+  page_path: string;
+  document_referrer: string;
+  captured_at: string;
+  session_id: string;
+}
+
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+const SESSION_KEY = "geo_session_id";
+const FIRST_TOUCH_KEY = "geo_first_touch";
+
+function getOrCreateSessionId(): string {
+  let id = sessionStorage.getItem(SESSION_KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    sessionStorage.setItem(SESSION_KEY, id);
+  }
+  return id;
+}
+
+function captureAttribution(): Attribution {
+  const params = new URLSearchParams(window.location.search);
+  const utm: UtmParams = {
+    utm_source: params.get("utm_source"),
+    utm_medium: params.get("utm_medium"),
+    utm_campaign: params.get("utm_campaign"),
+    utm_content: params.get("utm_content"),
+    utm_term: params.get("utm_term"),
+  };
+  return {
+    utm,
+    landing_page_url: window.location.href,
+    page_path: window.location.pathname,
+    document_referrer: document.referrer,
+    captured_at: new Date().toISOString(),
+    session_id: getOrCreateSessionId(),
+  };
+}
+
+function getFirstTouch(): Attribution | null {
+  try {
+    const raw = localStorage.getItem(FIRST_TOUCH_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function persistFirstTouch(attr: Attribution): void {
+  if (!getFirstTouch()) {
+    localStorage.setItem(FIRST_TOUCH_KEY, JSON.stringify(attr));
+  }
+}
+
+/* ── Form ── */
 
 interface FormData {
   name: string;
@@ -50,6 +118,14 @@ export default function ApplicationForm() {
     "idle" | "submitting" | "qualified" | "waitlist"
   >("idle");
   const hasTrackedStart = useRef(false);
+  const attributionRef = useRef<Attribution | null>(null);
+
+  // Capture UTM attribution on mount
+  useEffect(() => {
+    const attr = captureAttribution();
+    attributionRef.current = attr;
+    persistFirstTouch(attr);
+  }, []);
 
   function onChange(field: keyof FormData, value: string) {
     if (!hasTrackedStart.current) {
@@ -62,22 +138,41 @@ export default function ApplicationForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("submitting");
-    track("form_submit", { clientCount: form.clientCount });
+
+    // Build attribution payload (first + last touch)
+    const lastTouch = captureAttribution();
+    const firstTouch = getFirstTouch() || lastTouch;
+    const attribution = {
+      first_touch: firstTouch,
+      last_touch: lastTouch,
+    };
+
+    track("form_submit", {
+      clientCount: form.clientCount,
+      ...lastTouch.utm,
+    });
 
     const qualified = isQualified(form.clientCount);
     if (qualified) {
       track("qualified_submit", {
         clientCount: form.clientCount,
         agency: form.agencyName,
+        ...lastTouch.utm,
       });
     } else {
       track("disqualified_submit", {
         clientCount: form.clientCount,
         agency: form.agencyName,
+        ...lastTouch.utm,
       });
     }
 
-    // Replace with real API endpoint
+    // Replace with real API endpoint — attribution payload ready to send
+    console.log("[GEO Monitor] Submission payload:", {
+      form,
+      attribution,
+      qualified,
+    });
     await new Promise((r) => setTimeout(r, 1500));
     setStatus(qualified ? "qualified" : "waitlist");
   }
