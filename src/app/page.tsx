@@ -157,7 +157,7 @@ export default function Home() {
         <div className="hero-glow" />
 
         {/* Content */}
-        <div className="relative mx-auto max-w-5xl px-6 pb-32 pt-40 text-center md:pb-40 md:pt-52">
+        <div className="relative mx-auto max-w-5xl px-6 pb-24 pt-28 text-center md:pb-32 md:pt-36">
           {/* Beta badge */}
           <div className="animate-fade-up mb-8 inline-flex items-center gap-2.5 rounded-full border border-emerald/20 bg-emerald/5 px-5 py-2 text-sm font-medium text-emerald">
             <span className="pulse-dot h-2 w-2 rounded-full bg-emerald" />
