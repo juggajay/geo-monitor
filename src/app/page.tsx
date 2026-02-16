@@ -9,7 +9,7 @@ const FEATURES = [
   {
     title: "Multi-engine monitoring",
     description:
-      "Track client visibility across Google AI Overviews, ChatGPT, Perplexity, Gemini, and Copilot from a single dashboard.",
+      "Track visibility across Google AI Overviews, ChatGPT, Perplexity, Gemini, and Copilot from one dashboard.",
     icon: (
       <path
         strokeLinecap="round"
@@ -19,9 +19,9 @@ const FEATURES = [
     ),
   },
   {
-    title: "Client-level reports",
+    title: "Client-level reporting",
     description:
-      "White-label reports showing exactly how each client appears in AI answers — sentiment, accuracy, and citation tracking included.",
+      "Generate white-label reports for each client with visibility trends, citations, sentiment, and accuracy flags.",
     icon: (
       <path
         strokeLinecap="round"
@@ -31,9 +31,9 @@ const FEATURES = [
     ),
   },
   {
-    title: "Competitive intelligence",
+    title: "Competitive visibility tracking",
     description:
-      "See how clients rank against competitors in AI results. Spot gaps and opportunities before anyone else.",
+      "See which competitors AI engines mention first — and where your client is being ignored.",
     icon: (
       <path
         strokeLinecap="round"
@@ -43,9 +43,9 @@ const FEATURES = [
     ),
   },
   {
-    title: "Real-time alerts",
+    title: "Alerting on changes",
     description:
-      "Instant notifications when AI representation changes — new citations, dropped mentions, or sentiment shifts.",
+      "Get notified when representation shifts: new citations, lost mentions, sentiment drops, or factual errors.",
     icon: (
       <path
         strokeLinecap="round"
@@ -55,9 +55,9 @@ const FEATURES = [
     ),
   },
   {
-    title: "Query discovery",
+    title: "Query intelligence",
     description:
-      "Uncover the exact queries where AI engines mention or ignore your clients. Build GEO strategy on real data.",
+      "Identify prompts where clients win, lose, or never appear. Build GEO strategy from live data, not guesses.",
     icon: (
       <path
         strokeLinecap="round"
@@ -69,7 +69,7 @@ const FEATURES = [
   {
     title: "Agency workspace",
     description:
-      "Manage every client from one account. Role-based access, bulk actions, and a team dashboard.",
+      "Manage multiple clients, team access, and reporting workflows in one account.",
     icon: (
       <path
         strokeLinecap="round"
@@ -82,28 +82,32 @@ const FEATURES = [
 
 const FAQS = [
   {
-    q: "What exactly does GEO Monitor track?",
-    a: "We track how your clients appear in AI-generated search results across Google AI Overviews, ChatGPT, Perplexity, Gemini, and Microsoft Copilot. We monitor mentions, citations, sentiment, accuracy, and competitive positioning — everything you need to report on and optimize.",
+    q: "What does GEO Monitor actually track?",
+    a: "We track how clients appear in AI-generated answers across Google AI Overviews, ChatGPT, Perplexity, Gemini, and Copilot: mentions, citations, sentiment, accuracy, and competitor presence.",
   },
   {
-    q: "How is this different from traditional rank tracking?",
-    a: "Rank trackers monitor blue links. GEO Monitor tracks AI-generated answers — a completely different surface. We show whether your client is cited, quoted, recommended, or invisible to AI engines, and how that changes week over week.",
+    q: "How is this different from rank tracking tools?",
+    a: "Rank trackers measure link positions. GEO Monitor measures AI answer visibility — whether your client is cited, recommended, misrepresented, or missing.",
   },
   {
-    q: "What does the beta include?",
-    a: "Full platform access for up to 25 clients. Multi-engine monitoring, white-label reports, competitive intelligence, alerts, and priority support. We'll also incorporate your feedback directly into the roadmap.",
+    q: "What's included in beta?",
+    a: "Full platform access for up to 25 clients, multi-engine monitoring, white-label reports, alerts, and direct feedback access to our team.",
   },
   {
-    q: "Is there a cost for the beta?",
-    a: "No. The beta is free. We're looking for agency partners who will actively use the product and give honest feedback. After beta, early participants get founding-member pricing.",
+    q: "Is the beta paid?",
+    a: "No. Beta is free for selected agencies. No card required.",
   },
   {
-    q: "How long is the beta?",
-    a: "90 days, starting March 2026. Beta participants get uninterrupted access and a seamless transition to the full product at launch.",
+    q: "How long is beta?",
+    a: "90 days, starting March 2026, with transition to paid plans after beta.",
   },
   {
-    q: "Can I white-label reports for clients?",
-    a: "Yes. All reports can be exported with your agency branding. White-label support is a core feature, not an afterthought.",
+    q: "Can we white-label client reports?",
+    a: "Yes. White-label reporting is built in.",
+  },
+  {
+    q: "Who is this best for?",
+    a: "Agencies managing 5+ active SEO, content, or PR clients who want AI visibility reporting as a service line.",
   },
 ];
 
@@ -157,23 +161,23 @@ export default function Home() {
           {/* Beta badge */}
           <div className="animate-fade-up mb-8 inline-flex items-center gap-2.5 rounded-full border border-emerald/20 bg-emerald/5 px-5 py-2 text-sm font-medium text-emerald">
             <span className="pulse-dot h-2 w-2 rounded-full bg-emerald" />
-            Beta &mdash; Limited to 50 agencies
+            Beta for agencies (limited to 50)
           </div>
 
           {/* Headline */}
           <h1 className="animate-fade-up delay-1 font-heading text-5xl font-extrabold leading-[1.05] tracking-tight md:text-7xl lg:text-8xl">
-            Your clients are
+            See exactly how AI search
             <br />
-            <span className="gradient-text">invisible</span>{" "}
-            <span className="text-text-secondary">in AI search.</span>
+            <span className="gradient-text">talks about</span>{" "}
+            <span className="text-text-secondary">your clients.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="animate-fade-up delay-2 mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-text-secondary md:mt-10 md:text-xl">
-            Google AI Overviews, ChatGPT, and Perplexity are answering your
-            clients&apos; customers directly. GEO Monitor reveals exactly how
-            your clients appear&thinsp;&mdash;&thinsp;so you can act before the
-            traffic disappears.
+            Google AI Overviews, ChatGPT, Perplexity, Gemini, and Copilot are
+            shaping buyer decisions before clicks happen. GEO Monitor shows where
+            each client is visible, cited, and trusted&thinsp;&mdash;&thinsp;so
+            your agency can act before rankings and traffic slip.
           </p>
 
           {/* CTA */}
@@ -181,10 +185,14 @@ export default function Home() {
             <HeroCTA />
           </div>
 
-          {/* Trust line */}
-          <p className="animate-fade-up delay-4 mt-10 text-sm text-text-tertiary">
-            Built for agencies managing 5&ndash;500+ clients across SEO, content
-            &amp; digital PR
+          {/* Micro-trust */}
+          <p className="animate-fade-up delay-4 mt-6 text-sm font-medium text-text-secondary">
+            Free 90-day beta &bull; No card required &bull; Founding-member pricing locked
+          </p>
+
+          {/* Support line */}
+          <p className="animate-fade-up delay-5 mt-4 text-sm text-text-tertiary">
+            Built for agencies managing <span className="font-medium text-text-secondary">5&ndash;500+ clients</span> across SEO, content &amp; digital PR.
           </p>
         </div>
       </section>
@@ -199,24 +207,29 @@ export default function Home() {
           </p>
 
           <h2 className="mx-auto max-w-3xl text-center font-heading text-3xl font-bold leading-tight tracking-tight text-text-primary md:text-5xl">
-            AI is eating organic search.
+            AI answers are replacing clicks.
             <br />
-            <span className="text-text-secondary">Agencies are flying blind.</span>
+            <span className="text-text-secondary">Most agencies can&apos;t see what changed.</span>
           </h2>
 
           <p className="mx-auto mt-8 max-w-2xl text-center text-lg leading-relaxed text-text-secondary">
-            Over half of Google searches now end without a click. AI Overviews
-            answer the query directly. ChatGPT and Perplexity are the new front
-            page. Your clients&apos; traffic is shifting&thinsp;&mdash;&thinsp;and
-            you have zero visibility into where.
+            Over half of Google searches now end without a website visit. AI engines
+            answer directly. That means client visibility is shifting from blue links
+            to AI-generated answers&thinsp;&mdash;&thinsp;and most reporting stacks
+            miss it entirely.
+          </p>
+
+          <p className="mx-auto mt-5 max-w-2xl text-center text-lg leading-relaxed text-text-secondary">
+            If your client is not cited, recommended, or accurately represented in
+            AI responses, performance drops before traditional SEO tools show the damage.
           </p>
 
           {/* Stat cards */}
           <div className="mt-16 grid gap-5 md:mt-20 md:grid-cols-3">
             {[
-              { stat: "51%", label: "of Google searches are now zero-click" },
-              { stat: "400M+", label: "weekly active ChatGPT users" },
-              { stat: "0", label: "tools built for agency-scale GEO monitoring" },
+              { stat: "50%+", label: "Zero-click searches — Google queries that never reach a website" },
+              { stat: "100M+", label: "AI search adoption — weekly users across ChatGPT and AI Overviews" },
+              { stat: "~0", label: "Agency-grade GEO tools — still early and fragmented" },
             ].map((item) => (
               <div key={item.label} className="card p-8 text-center md:p-10">
                 <div className="font-heading text-5xl font-extrabold text-emerald md:text-6xl">
@@ -240,16 +253,16 @@ export default function Home() {
           </p>
 
           <h2 className="mx-auto max-w-3xl text-center font-heading text-3xl font-bold leading-tight tracking-tight text-text-primary md:text-5xl">
-            See how AI engines
+            Monitor AI visibility across
             <br />
-            <span className="text-text-secondary">represent your clients.</span>
+            <span className="text-text-secondary">every client, engine, and query.</span>
           </h2>
 
           <p className="mx-auto mt-8 max-w-2xl text-center text-lg leading-relaxed text-text-secondary">
-            GEO Monitor continuously queries AI search engines and tracks exactly
-            how your clients appear&thinsp;&mdash;&thinsp;mentions, citations,
-            sentiment, accuracy, and competitive positioning. One dashboard, every
-            engine, all your clients.
+            GEO Monitor continuously tests real prompts across major AI engines
+            and tracks how each client appears: mentions, citations, sentiment,
+            factual accuracy, and competitor share. One workspace. Agency scale.
+            Client-ready reporting.
           </p>
 
           {/* Feature grid */}
@@ -482,7 +495,7 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-5xl px-6">
           <p className="mb-4 text-center font-heading text-xs font-semibold uppercase tracking-[0.2em] text-emerald">
-            Apply Now
+            Apply for Beta
           </p>
 
           <h2 className="mx-auto max-w-2xl text-center font-heading text-3xl font-bold leading-tight tracking-tight text-text-primary md:text-5xl">
@@ -492,9 +505,25 @@ export default function Home() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-xl text-center text-lg text-text-secondary">
-            Spots are limited. We&apos;re accepting agencies who will actively use
-            the product and help shape its direction.
+            We&apos;re onboarding a limited group of agencies who will actively use
+            the platform and provide product feedback.
           </p>
+
+          {/* Trust bullets */}
+          <ul className="mx-auto mt-6 flex max-w-md flex-col gap-3 text-sm text-text-secondary sm:flex-row sm:max-w-none sm:justify-center sm:gap-8">
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
+              Free 90-day beta
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
+              Up to 25 clients during beta
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
+              Founding-member pricing locked
+            </li>
+          </ul>
 
           <div className="mt-14 md:mt-16">
             <ApplicationForm />

@@ -10,7 +10,7 @@ export default function HeroCTA() {
         onClick={() => track("hero_cta_click")}
         className="btn-primary btn-primary-lg"
       >
-        Apply for Beta Access
+        Apply for Beta
         <svg
           className="h-5 w-5"
           fill="none"

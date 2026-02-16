@@ -17,21 +17,17 @@ export default function MidpageCTA() {
 
       <div className="relative mx-auto max-w-3xl px-6 text-center">
         <h2 className="font-heading text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-          AI search is rewriting the rules.
+          AI search is moving fast.
           <br />
-          <span className="text-text-secondary">Are your clients ready?</span>
+          <span className="text-text-secondary">Your reporting should too.</span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-text-secondary">
-          Agencies that monitor AI search visibility now will own the category.
-          The ones that wait will be playing catch-up.
-        </p>
         <div className="mt-10">
           <a
             href="#apply"
             onClick={() => track("midpage_cta_click", { source: "midpage_section" })}
             className="btn-primary btn-primary-lg"
           >
-            Claim Your Spot
+            Apply for Beta
           </a>
         </div>
       </div>

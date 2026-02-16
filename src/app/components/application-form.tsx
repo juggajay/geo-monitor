@@ -35,10 +35,8 @@ const CLIENT_OPTIONS = [
 
 const SERVICE_OPTIONS = [
   "SEO",
-  "Content Marketing",
-  "Paid Search / PPC",
+  "Content",
   "Digital PR",
-  "Full-Service Digital",
   "Other",
 ];
 
@@ -107,14 +105,14 @@ export default function ApplicationForm() {
               </svg>
             </div>
             <h3 className="font-heading text-2xl font-bold text-text-primary md:text-3xl">
-              You&apos;re in.
+              Application received.
             </h3>
             <p className="mt-4 text-text-secondary leading-relaxed">
-              We&apos;ll reach out within 48 hours with your beta access details.
+              If accepted, we&apos;ll send onboarding details within 3 business days.
               <br />
               Check{" "}
               <span className="font-medium text-text-primary">{form.email}</span>{" "}
-              for a confirmation.
+              for updates.
             </p>
           </div>
         </div>
@@ -215,7 +213,7 @@ export default function ApplicationForm() {
 
           {/* Row 3 */}
           <div className="grid gap-6 md:grid-cols-2">
-            <Field label="How many clients do you manage?" required>
+            <Field label="Number of active clients" required>
               <select
                 required
                 value={form.clientCount}
@@ -245,7 +243,7 @@ export default function ApplicationForm() {
           </div>
 
           {/* Service focus pills */}
-          <Field label="Primary service focus" required>
+          <Field label="Primary services" required>
             <div className="flex flex-wrap gap-2.5">
               {SERVICE_OPTIONS.map((s) => (
                 <button
@@ -265,7 +263,7 @@ export default function ApplicationForm() {
           </Field>
 
           {/* Pain point */}
-          <Field label="What's your biggest pain point with AI search visibility?" required>
+          <Field label="Biggest challenge with AI visibility reporting" required>
             <textarea
               required
               rows={4}
@@ -326,12 +324,12 @@ export default function ApplicationForm() {
                 Reviewing your application...
               </span>
             ) : (
-              "Apply for Beta Access"
+              "Apply for Beta"
             )}
           </button>
 
           <p className="text-center text-xs leading-relaxed text-text-tertiary">
-            No credit card required. We review every application within 48 hours.
+            By applying, you agree to be contacted about beta onboarding and product updates.
           </p>
         </form>
       </div>
