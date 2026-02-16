@@ -1,3 +1,5 @@
+import posthog from "posthog-js";
+
 type AnalyticsEvent =
   | "hero_cta_click"
   | "midpage_cta_click"
@@ -10,7 +12,6 @@ type AnalyticsEvent =
 
 declare global {
   interface Window {
-    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void };
     gtag?: (...args: unknown[]) => void;
   }
 }
@@ -20,10 +21,12 @@ export function track(event: AnalyticsEvent, properties?: Record<string, unknown
 
   console.log(`[GEO Monitor] ${event}`, properties);
 
-  if (window.posthog) {
-    window.posthog.capture(event, properties);
+  // PostHog SDK
+  if (posthog.__loaded) {
+    posthog.capture(event, properties);
   }
 
+  // GA4
   if (window.gtag) {
     window.gtag("event", event, properties);
   }
