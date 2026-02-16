@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { sql, ensureTable } from "@/lib/db";
 
 interface ApplyBody {
   form: {
@@ -49,8 +49,15 @@ function qualificationStatus(clientCount: string): string {
   return "qualified";
 }
 
+let tableReady = false;
+
 export async function POST(request: NextRequest) {
   try {
+    if (!tableReady) {
+      await ensureTable();
+      tableReady = true;
+    }
+
     const body: ApplyBody = await request.json();
 
     // Validate required fields
@@ -75,12 +82,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const db = getDb();
-    const submittedAt = new Date().toISOString();
     const status = qualificationStatus(body.form.clientCount);
     const lastUtm = body.attribution?.last_touch?.utm;
 
-    const stmt = db.prepare(`
+    const rows = await sql`
       INSERT INTO applications (
         full_name, work_email, agency_name, website,
         active_clients_range, role, primary_services, biggest_challenge,
@@ -89,38 +94,31 @@ export async function POST(request: NextRequest) {
         first_touch_json, last_touch_json,
         submitted_at
       ) VALUES (
-        ?, ?, ?, ?,
-        ?, ?, ?, ?,
-        ?, 'NEW',
-        ?, ?, ?, ?, ?,
-        ?, ?,
-        ?
+        ${body.form.name.trim()},
+        ${body.form.email.trim().toLowerCase()},
+        ${body.form.agencyName.trim()},
+        ${body.form.website?.trim() || null},
+        ${body.form.clientCount},
+        ${body.form.role?.trim() || null},
+        ${body.form.serviceFocus},
+        ${body.form.biggestPain.trim()},
+        ${status},
+        ${"NEW"},
+        ${lastUtm?.utm_source || null},
+        ${lastUtm?.utm_medium || null},
+        ${lastUtm?.utm_campaign || null},
+        ${lastUtm?.utm_content || null},
+        ${lastUtm?.utm_term || null},
+        ${JSON.stringify(body.attribution?.first_touch || null)},
+        ${JSON.stringify(body.attribution?.last_touch || null)},
+        NOW()
       )
-    `);
-
-    const result = stmt.run(
-      body.form.name.trim(),
-      body.form.email.trim().toLowerCase(),
-      body.form.agencyName.trim(),
-      body.form.website?.trim() || null,
-      body.form.clientCount,
-      body.form.role?.trim() || null,
-      body.form.serviceFocus,
-      body.form.biggestPain.trim(),
-      status,
-      lastUtm?.utm_source || null,
-      lastUtm?.utm_medium || null,
-      lastUtm?.utm_campaign || null,
-      lastUtm?.utm_content || null,
-      lastUtm?.utm_term || null,
-      JSON.stringify(body.attribution?.first_touch || null),
-      JSON.stringify(body.attribution?.last_touch || null),
-      submittedAt
-    );
+      RETURNING id
+    `;
 
     return NextResponse.json({
       ok: true,
-      id: result.lastInsertRowid,
+      id: rows[0].id,
     });
   } catch (err) {
     console.error("[/api/beta/apply] Error:", err);
