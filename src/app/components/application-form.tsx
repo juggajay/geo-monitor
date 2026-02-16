@@ -301,7 +301,7 @@ export default function ApplicationForm() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={status === "submitting" || !form.serviceFocus}
+            disabled={status === "submitting"}
             className="btn-primary w-full !rounded-xl !py-5 !text-base disabled:cursor-not-allowed disabled:opacity-40"
           >
             {status === "submitting" ? (

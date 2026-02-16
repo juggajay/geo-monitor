@@ -173,7 +173,7 @@ export default function Home() {
           </h1>
 
           {/* Subheadline */}
-          <p className="animate-fade-up delay-2 mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-text-secondary md:mt-10 md:text-xl">
+          <p className="animate-fade-up delay-2 mx-auto mt-8 max-w-xl text-lg leading-relaxed text-text-secondary md:mt-10 md:text-xl">
             Google AI Overviews, ChatGPT, Perplexity, Gemini, and Copilot are
             shaping buyer decisions before clicks happen. GEO Monitor shows where
             each client is visible, cited, and trusted&thinsp;&mdash;&thinsp;so
@@ -187,7 +187,7 @@ export default function Home() {
 
           {/* Micro-trust */}
           <p className="animate-fade-up delay-4 mt-6 text-sm font-medium text-text-secondary">
-            Free 90-day beta &bull; No card required &bull; Founding-member pricing locked
+            Free 90-day beta &bull; No card required &bull; Founding member pricing locked
           </p>
 
           {/* Support line */}
@@ -199,7 +199,7 @@ export default function Home() {
 
       {/* ━━━ PROBLEM ━━━ */}
       <div className="section-divider" />
-      <section className="relative py-28 md:py-40">
+      <section className="relative py-20 md:py-28">
         <div className="mx-auto max-w-5xl px-6">
           {/* Section label */}
           <p className="mb-4 text-center font-heading text-xs font-semibold uppercase tracking-[0.2em] text-emerald">
@@ -229,7 +229,7 @@ export default function Home() {
             {[
               { stat: "50%+", label: "Zero-click searches — Google queries that never reach a website" },
               { stat: "100M+", label: "AI search adoption — weekly users across ChatGPT and AI Overviews" },
-              { stat: "~0", label: "Agency-grade GEO tools — still early and fragmented" },
+              { stat: "Few", label: "Agency-grade GEO tools — an early and fragmented market" },
             ].map((item) => (
               <div key={item.label} className="card p-8 text-center md:p-10">
                 <div className="font-heading text-5xl font-extrabold text-emerald md:text-6xl">
@@ -241,12 +241,15 @@ export default function Home() {
               </div>
             ))}
           </div>
+          <p className="mt-6 text-center text-xs text-text-tertiary">
+            Based on public market data and platform usage reports (2025&ndash;2026).
+          </p>
         </div>
       </section>
 
       {/* ━━━ SOLUTION ━━━ */}
       <div className="section-divider" />
-      <section id="solution" className="relative py-28 md:py-40">
+      <section id="solution" className="relative py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <p className="mb-4 text-center font-heading text-xs font-semibold uppercase tracking-[0.2em] text-emerald">
             The Solution
@@ -298,7 +301,7 @@ export default function Home() {
 
       {/* ━━━ WHAT AGENCIES GET ━━━ */}
       <div className="section-divider" />
-      <section className="relative py-28 md:py-40">
+      <section className="relative py-20 md:py-28">
         <div className="mx-auto max-w-5xl px-6">
           <p className="mb-4 text-center font-heading text-xs font-semibold uppercase tracking-[0.2em] text-emerald">
             Beta Includes
@@ -361,7 +364,7 @@ export default function Home() {
 
       {/* ━━━ WHO IT'S FOR ━━━ */}
       <div className="section-divider" />
-      <section className="relative py-28 md:py-40">
+      <section className="relative py-20 md:py-28">
         <div className="mx-auto max-w-5xl px-6">
           <p className="mb-4 text-center font-heading text-xs font-semibold uppercase tracking-[0.2em] text-emerald">
             Is This For You?
@@ -436,7 +439,7 @@ export default function Home() {
 
       {/* ━━━ FAQ ━━━ */}
       <div className="section-divider" />
-      <section className="relative py-28 md:py-40">
+      <section className="relative py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-6">
           <p className="mb-4 text-center font-heading text-xs font-semibold uppercase tracking-[0.2em] text-emerald">
             FAQ
@@ -469,7 +472,7 @@ export default function Home() {
                   </summary>
                   <div className="faq-body">
                     <div>
-                      <p className="pb-7 text-sm leading-relaxed text-text-secondary">
+                      <p className="pb-7 text-[15px] leading-relaxed text-text-secondary md:text-base">
                         {faq.a}
                       </p>
                     </div>
@@ -521,7 +524,7 @@ export default function Home() {
             </li>
             <li className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
-              Founding-member pricing locked
+              Founding member pricing locked
             </li>
           </ul>
 
