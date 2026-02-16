@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ApplicationForm from "./components/application-form";
 import StickyCTA from "./components/sticky-cta";
 import HeroCTA from "./components/hero-cta";
@@ -182,7 +183,9 @@ export default function Home() {
 
           {/* CTA */}
           <div className="animate-fade-up delay-3 mt-12 md:mt-14">
-            <HeroCTA />
+            <Suspense fallback={<a href="#apply" className="btn-primary btn-primary-lg">Apply for Beta</a>}>
+              <HeroCTA />
+            </Suspense>
           </div>
 
           {/* Micro-trust */}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Syne, Outfit } from "next/font/google";
+import AnalyticsScripts from "./components/analytics-scripts";
 import "./globals.css";
 
 const syne = Syne({
@@ -32,7 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${outfit.variable}`}>{children}</body>
+      <body className={`${syne.variable} ${outfit.variable}`}>
+        {children}
+        <AnalyticsScripts />
+      </body>
     </html>
   );
 }
