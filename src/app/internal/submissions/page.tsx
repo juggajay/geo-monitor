@@ -21,11 +21,31 @@ interface Application {
   submitted_at: string;
 }
 
+interface AuditRequest {
+  id: number;
+  full_name: string;
+  work_email: string;
+  company_name: string;
+  website: string | null;
+  message: string | null;
+  utm_source: string | null;
+  utm_campaign: string | null;
+  status: string;
+  submitted_at: string;
+}
+
 interface Stats {
   total: number;
   qualified: number;
   disqualified: number;
   review: number;
+}
+
+interface AuditStats {
+  total: number;
+  new: number;
+  contacted: number;
+  completed: number;
 }
 
 const STAGE_OPTIONS = ["NEW", "CONTACTED", "ONBOARDING", "ACTIVE", "DECLINED"];
@@ -43,8 +63,11 @@ const STAGE_COLORS: Record<string, string> = {
 };
 
 export default function SubmissionsDashboard() {
+  const [tab, setTab] = useState<"beta" | "audit">("beta");
   const [applications, setApplications] = useState<Application[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [auditRequests, setAuditRequests] = useState<AuditRequest[]>([]);
+  const [auditStats, setAuditStats] = useState<AuditStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState("");
   const [filterSource, setFilterSource] = useState("");
@@ -71,9 +94,25 @@ export default function SubmissionsDashboard() {
     setLoading(false);
   }, [filterStatus, filterSource, filterCampaign]);
 
+  const fetchAuditData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/v1/intake/audit-requests");
+      const data = await res.json();
+      if (data.ok) {
+        setAuditRequests(data.requests);
+        setAuditStats(data.stats);
+      }
+    } catch (err) {
+      console.error("Failed to fetch audit requests:", err);
+    }
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (tab === "beta") fetchData();
+    else fetchAuditData();
+  }, [fetchData, fetchAuditData, tab]);
 
   async function updateStage(id: number, stage: string) {
     try {
@@ -96,15 +135,159 @@ export default function SubmissionsDashboard() {
         {/* Header */}
         <div className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight">
-            Beta Submissions
+            Internal Dashboard
           </h1>
           <p className="mt-2 text-sm text-[#8888a0]">
-            GEO Monitor — Internal Pipeline Dashboard
+            GEO Monitor — Pipeline &amp; Audit Requests
           </p>
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={() => setTab("beta")}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                tab === "beta"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-[#10101a] text-[#8888a0] border border-[#1a1a2e] hover:text-white"
+              }`}
+            >
+              Beta Submissions
+            </button>
+            <button
+              onClick={() => setTab("audit")}
+              className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                tab === "audit"
+                  ? "bg-emerald-600 text-white"
+                  : "bg-[#10101a] text-[#8888a0] border border-[#1a1a2e] hover:text-white"
+              }`}
+            >
+              Audit Requests
+            </button>
+          </div>
         </div>
 
-        {/* Stats */}
-        {stats && (
+        {tab === "audit" && (
+          <>
+            {/* Audit Stats */}
+            {auditStats && (
+              <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+                <StatCard label="Total" value={auditStats.total} color="text-white" />
+                <StatCard label="New" value={auditStats.new} color="text-blue-400" />
+                <StatCard label="Contacted" value={auditStats.contacted} color="text-purple-400" />
+                <StatCard label="Completed" value={auditStats.completed} color="text-emerald-400" />
+              </div>
+            )}
+            <div className="mb-6 flex">
+              <button
+                onClick={fetchAuditData}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-500"
+              >
+                Refresh
+              </button>
+            </div>
+            {loading ? (
+              <div className="py-20 text-center text-[#55556a]">Loading...</div>
+            ) : auditRequests.length === 0 ? (
+              <div className="py-20 text-center text-[#55556a]">
+                No audit requests yet.
+              </div>
+            ) : (
+              <div className="overflow-x-auto rounded-xl border border-[#1a1a2e]">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-[#1a1a2e] bg-[#0c0c12]">
+                      <th className="px-4 py-3 font-medium text-[#8888a0]">Date</th>
+                      <th className="px-4 py-3 font-medium text-[#8888a0]">Name</th>
+                      <th className="px-4 py-3 font-medium text-[#8888a0]">Company</th>
+                      <th className="px-4 py-3 font-medium text-[#8888a0]">Source</th>
+                      <th className="px-4 py-3 font-medium text-[#8888a0]">Status</th>
+                      <th className="px-4 py-3 font-medium text-[#8888a0]"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {auditRequests.map((req) => (
+                      <tr
+                        key={req.id}
+                        className="border-b border-[#1a1a2e] transition hover:bg-[#0c0c12] cursor-pointer"
+                        onClick={() => setExpanded(expanded === req.id ? null : req.id)}
+                      >
+                        <td className="px-4 py-3 text-[#8888a0]">
+                          {new Date(req.submitted_at).toLocaleDateString("en-AU", {
+                            day: "numeric",
+                            month: "short",
+                          })}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div>{req.full_name}</div>
+                          <div className="text-xs text-[#55556a]">{req.work_email}</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div>{req.company_name}</div>
+                          {req.website && (
+                            <div className="text-xs text-[#55556a]">{req.website}</div>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-[#8888a0]">
+                          {req.utm_source || "direct"}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-medium ${
+                            req.status === "new"
+                              ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                              : req.status === "contacted"
+                              ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                              : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                          }`}>
+                            {req.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-[#55556a]">
+                          <svg
+                            className={`h-4 w-4 transition ${expanded === req.id ? "rotate-180" : ""}`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                          </svg>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {expanded && (() => {
+                  const req = auditRequests.find((r) => r.id === expanded);
+                  if (!req) return null;
+                  return (
+                    <div className="border-t border-[#1a1a2e] bg-[#0c0c12] px-6 py-5">
+                      <div className="grid gap-4 md:grid-cols-3">
+                        <div>
+                          <div className="text-xs font-medium text-[#55556a]">Website</div>
+                          <div className="mt-1 text-sm">{req.website || "—"}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs font-medium text-[#55556a]">Campaign</div>
+                          <div className="mt-1 text-sm">{req.utm_campaign || "—"}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs font-medium text-[#55556a]">Source</div>
+                          <div className="mt-1 text-sm">{req.utm_source || "direct"}</div>
+                        </div>
+                      </div>
+                      {req.message && (
+                        <div className="mt-4">
+                          <div className="text-xs font-medium text-[#55556a]">Message</div>
+                          <div className="mt-1 text-sm leading-relaxed text-[#8888a0]">{req.message}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+          </>
+        )}
+
+        {tab === "beta" && stats && (
           <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
             <StatCard label="Total" value={stats.total} color="text-white" />
             <StatCard label="Qualified" value={stats.qualified} color="text-emerald-400" />
@@ -113,6 +296,7 @@ export default function SubmissionsDashboard() {
           </div>
         )}
 
+        {tab === "beta" && <>
         {/* Filters */}
         <div className="mb-6 flex flex-wrap gap-3">
           <select
@@ -271,6 +455,7 @@ export default function SubmissionsDashboard() {
             })()}
           </div>
         )}
+        </>}
       </div>
     </div>
   );

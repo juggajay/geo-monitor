@@ -13,8 +13,8 @@ export function middleware(request: NextRequest) {
     if (scheme === "Basic" && encoded) {
       const decoded = atob(encoded);
       const [user, pass] = decoded.split(":");
-      const validUser = process.env.INTERNAL_DASH_USER || "admin";
-      const validPass = process.env.INTERNAL_DASH_PASS;
+      const validUser = process.env.INTERNAL_USER || process.env.INTERNAL_DASH_USER || "admin";
+      const validPass = process.env.INTERNAL_PASS || process.env.INTERNAL_DASH_PASS;
 
       if (validPass && user === validUser && pass === validPass) {
         return NextResponse.next();

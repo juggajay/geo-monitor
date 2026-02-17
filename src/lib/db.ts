@@ -8,6 +8,30 @@ if (!DATABASE_URL) {
 
 export const sql = neon(DATABASE_URL);
 
+/** Run once to create audit_requests table. */
+export async function ensureAuditTable() {
+  await sql`
+    CREATE TABLE IF NOT EXISTS audit_requests (
+      id SERIAL PRIMARY KEY,
+      full_name TEXT NOT NULL,
+      work_email TEXT NOT NULL,
+      company_name TEXT NOT NULL,
+      website TEXT,
+      message TEXT,
+      honeypot_value TEXT,
+      utm_source TEXT,
+      utm_medium TEXT,
+      utm_campaign TEXT,
+      utm_content TEXT,
+      utm_term TEXT,
+      ip_hash TEXT,
+      status TEXT NOT NULL DEFAULT 'new',
+      submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+}
+
 /** Run once on first deploy to create the table. */
 export async function ensureTable() {
   // Add hero_variant column if missing (safe to run repeatedly)
